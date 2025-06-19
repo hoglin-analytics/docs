@@ -1,0 +1,175 @@
+---
+title: Hoglin SDK Reference
+description: Full reference for the Hoglin Kotlin/Java SDK.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components'
+import { Aside } from '@astrojs/starlight/components';
+
+The Hoglin SDK lets you track any event from your Minecraft server plugin with just a few lines of code.
+This page documents all available classes, methods, and configuration options.
+
+---
+
+## Installation
+
+See [Getting Started](./getting-started) for installation instructions.
+
+---
+
+## `Hoglin.Builder`
+
+The main entrypoint for creating a Hoglin instance.
+
+<Tabs>
+  <TabItem label="Kotlin">
+    ```kotlin
+    val analytics = Hoglin.Builder("<your server key>")
+        .autoFlushInterval(5_000L)
+        .maxBatchSize(50)
+        .build()
+    ```
+</TabItem>
+  <TabItem label="Java">
+      ```java
+      Hoglin analytics = new Hoglin.Builder("<your server key>")
+          .autoFlushInterval(5_000L)
+          .maxBatchSize(50)
+          .build();
+      ```
+  </TabItem>
+</Tabs>
+
+
+### **Builder Options**
+
+| Method                  | Type      | Default                | Description                                      |
+|-------------------------|-----------|------------------------|--------------------------------------------------|
+| `autoFlushInterval(ms)` | `Long`    | `5000`                 | How often (ms) to send queued events             |
+| `maxBatchSize(n)`       | `Int`     | `50`                   | Max events sent per batch                        |
+| `enableAutoFlush(b)`    | `Boolean` | `true`                 | Whether to auto-flush events                     |
+| `baseUrl(url)`          | `String`  | `https://api.hoglin.gg`| API endpoint (should never be used, outside of certain circumstances) |
+
+---
+
+## `Hoglin` Methods
+
+### `track(eventType: String, properties: Map<String, Any>)`
+
+<Aside type="tip">
+
+**Best Practices:**
+- Keep event names consistent using a single format (`snake_case`, `camelCase`, etc.)
+- Only include essential data in properties - very many excessive unique values can impact performance
+- Stick to simple data types: strings, numbers, booleans, etc.
+
+</Aside>
+
+Tracks a custom event.
+
+<Tabs>
+  <TabItem label="Kotlin">
+    ```kotlin
+    analytics.track("player_join", mapOf(
+        "player_uuid" to event.player.uniqueId
+    ))
+    ```
+  </TabItem>
+  <TabItem label="Java">
+    ```java
+    Map<String, String> properties = new HashMap<>();
+    properties.put("player_uuid", event.getPlayer().getUniqueId(),toString());
+    analytics.track("player_join", properties);
+    ```
+  </TabItem>
+</Tabs>
+
+- **eventType**: Name of the event (e.g. `"player_join"`)
+- **properties**: Key-value pairs of event data (any serializable value)
+
+---
+
+### `flush()`
+
+Immediately sends all queued events to the server.
+
+ ```kotlin
+ analytics.flush();
+ ```
+---
+
+### `shutdownBlocking()`
+
+Stops the auto-flushing task and flushes all current events (call this in `onDisable` or equivalent).
+
+```kotlin
+analytics.shutdownBlocking()
+```
+
+---
+
+## Event Schema
+
+Each event you send with the SDK has:
+
+| Field         | Type              | Description                        |
+|---------------|-------------------|------------------------------------|
+| `event_type`  | `String`          | Name of the event                  |
+| `timestamp`   | `Long` (ms)       | When the event was tracked         |
+| `properties`  | `Map<String,Any>` | Your custom event data             |
+
+---
+
+## Error Handling
+
+- The SDK queues events locally and retries if the API is unavailable.
+- No events are lost unless the server is stopped before flushing.
+- Use `flush()` or `shutdownBlocking()` to ensure all events are sent.
+
+---
+
+## Example Usage
+
+<Tabs>
+  <TabItem label="Kotlin">
+    ```kotlin
+    val analytics = Hoglin.Builder("<your server key>")
+        .autoFlushInterval(5_000L)
+        .maxBatchSize(50)
+        .build()
+
+    analytics.track("player_death", mapOf(
+        "player_uuid" to player.uniqueId,
+        "cause" to event.deathMessage
+    ))
+    ```
+  </TabItem>
+  <TabItem label="Java">
+    ```java
+    Hoglin analytics = new Hoglin.Builder("<your server key>")
+        .autoFlushInterval(5_000L)
+        .maxBatchSize(50)
+        .build();
+
+    Map<String, Object> properties = new HashMap<>();
+    properties.put("player_uuid", player.getUniqueId().toString());
+    properties.put("cause", event.getDeathMessage());
+    analytics.track("player_death", properties);
+    ```
+  </TabItem>
+</Tabs>
+
+---
+
+---
+## FAQ
+
+- **What happens if my server loses connection?**
+
+  Events are queued and retried automatically.
+
+- **Is there a limit to property keys/values?**
+
+  No hard limit, but keep payloads reasonable for performance.
+
+---
