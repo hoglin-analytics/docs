@@ -17,6 +17,7 @@ export default defineConfig({
   			{ label: 'Introduction', link: '/introduction' },
         { label: 'Getting Started', link: '/getting-started' },
         { label: 'Pricing', link: '/pricing' },
+        { label: 'Contribute', link: '/contribute' },
         {
             label: 'Guides',
             items: [
