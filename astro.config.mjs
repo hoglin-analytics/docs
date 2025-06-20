@@ -10,9 +10,13 @@ export default defineConfig({
   		plugins: [starlightThemeFlexoki({
    		  accentColor: "orange",
   		})],
+      favicon: './src/assets/favicon.png',
       customCss: ["/src/styles/custom.css"],
 			title: 'Hoglin',
-			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/hoglin-analytics/docs' }],
+			social: [
+  			{ icon: 'github', label: 'GitHub', href: 'https://github.com/hoglin-analytics/docs' },
+  			{ icon: 'discord', label: 'Discord', href: 'https://hoglin.gg/discord' }
+			],
 			sidebar: [
   			{ label: 'Introduction', link: '/introduction' },
         { label: 'Getting Started', link: '/getting-started' },
@@ -33,6 +37,9 @@ export default defineConfig({
             ],
         },
 			],
+	    editLink: {
+        baseUrl: 'https://github.com/hoglin-analytics/docs/edit/main/',
+      },
 		}),
 	],
 });
