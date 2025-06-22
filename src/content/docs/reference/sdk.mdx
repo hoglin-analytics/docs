@@ -152,7 +152,7 @@ Each event you send with the SDK has:
         .build();
 
     Map<String, Object> properties = new HashMap<>();
-    properties.put("player_uuid", player.getUniqueId().toString());
+    properties.put("player_uuid", player.getUniqueId());
     properties.put("cause", event.getDeathMessage());
     analytics.track("player_death", properties);
     ```
