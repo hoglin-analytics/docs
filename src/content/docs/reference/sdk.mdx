@@ -78,7 +78,7 @@ Tracks a custom event.
   <TabItem label="Java">
     ```java
     Map<String, String> properties = new HashMap<>();
-    properties.put("player_uuid", event.getPlayer().getUniqueId(),toString());
+    properties.put("player_uuid", event.getPlayer().getUniqueId());
     analytics.track("player_join", properties);
     ```
   </TabItem>
