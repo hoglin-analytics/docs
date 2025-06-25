@@ -145,7 +145,7 @@ Track player chat activity:
   <TabItem label="Kotlin">
     ```kotlin
     @EventHandler
-    fun onPlayerChat(event: AsyncPlayerChatEvent) {
+    fun onPlayerChat(event: AsyncChatEvent) {
         analytics.track("player_chat", mapOf(
             "player_uuid" to event.player.uniqueId,
         ))
@@ -155,7 +155,7 @@ Track player chat activity:
   <TabItem label="Java">
     ```java
     @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
+    public void onPlayerChat(AsyncChatEvent event) {
         Map<String, Object> properties = new HashMap<>();
         properties.put("player_uuid", event.getPlayer().getUniqueId());
         analytics.track("player_chat", properties);
