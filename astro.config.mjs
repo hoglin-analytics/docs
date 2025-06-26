@@ -28,6 +28,7 @@ export default defineConfig({
               { label: 'Create a server', link: '/guides/create-server' },
               { label: 'Track player events', link: '/guides/player-events' },
               { label: 'Explore your data', link: '/guides/explore' },
+              { label: 'Learn about Experiments', link: '/guides/experiments' },
             ],
         },
         {
