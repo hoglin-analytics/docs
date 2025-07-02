@@ -1,0 +1,7 @@
+{
+  "name": "hoglin-docs",
+  "compatibility_date": "2025-06-19",
+  "assets": {
+    "directory": "./dist",
+  },
+}

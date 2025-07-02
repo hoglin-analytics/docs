@@ -1,0 +1,310 @@
+---
+title: Hoglin SDK Reference
+description: Full reference for the Hoglin Kotlin/Java SDK.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components'
+import { Aside } from '@astrojs/starlight/components';
+
+The Hoglin SDK lets you track any event from your Minecraft server plugin and control feature rollouts with experiments using just a few lines of code.
+This page documents all available classes, methods, and configuration options.
+
+---
+
+## Installation
+
+See [Getting Started](/getting-started) for installation instructions.
+
+---
+
+## `Hoglin.Builder`
+
+The main entrypoint for creating a Hoglin instance.
+
+<Tabs>
+  <TabItem label="Kotlin">
+    ```kotlin
+    val hoglin = Hoglin.Builder("<your server key>")
+        .autoFlushInterval(30_000L)
+        .maxBatchSize(1_000)
+        .build()
+    ```
+</TabItem>
+  <TabItem label="Java">
+      ```java
+      Hoglin hoglin = new Hoglin.Builder("<your server key>")
+          .autoFlushInterval(30_000L)
+          .maxBatchSize(1_000)
+          .enableAutoFlush(true)
+          .build();
+      ```
+  </TabItem>
+</Tabs>
+
+### **Builder Options**
+
+| Method                  | Type      | Default                | Description                                      |
+|-------------------------|-----------|------------------------|--------------------------------------------------|
+| `autoFlushInterval(ms)` | `Long`    | `30000`                | How often (ms) to send queued events             |
+| `maxBatchSize(n)`       | `Int`     | `1000`                 | Max events sent per batch                        |
+| `enableAutoFlush(b)`    | `Boolean` | `true`                 | Whether to auto-flush events                     |
+| `baseUrl(url)`          | `String`  | `https://api.hoglin.gg`| API endpoint (should never be used, outside of certain circumstances)     |
+| `registerSerializer(class, adapter)` | Generic | None | Register custom Gson type adapters |
+
+---
+
+## Analytics Methods
+
+### `track(eventType: String, properties: Map<String, Any>)`
+
+<Aside type="tip">
+
+**Best Practices:**
+- Keep event names consistent using a single format (`snake_case`, `camelCase`, etc.)
+- Only include essential data in properties - very many excessive unique values can impact performance
+- Stick to simple data types: strings, numbers, booleans, etc.
+
+</Aside>
+
+Tracks a custom event.
+
+<Tabs>
+  <TabItem label="Kotlin">
+    ```kotlin
+    hoglin.track("player_join", mapOf(
+        "player_uuid" to event.player.uniqueId.toString(),
+        "server_name" to "lobby"
+    ))
+    ```
+  </TabItem>
+  <TabItem label="Java">
+    ```java
+    Map<String, Object> properties = new HashMap<>();
+    properties.put("player_uuid", event.getPlayer().getUniqueId().toString());
+    properties.put("server_name", "lobby");
+    hoglin.track("player_join", properties);
+    ```
+  </TabItem>
+</Tabs>
+
+- **eventType**: Name of the event (e.g. `"player_join"`)
+- **properties**: Key-value pairs of event data (any serializable value)
+
+---
+
+### `flush(): FlushResult` (suspend)
+
+Immediately sends all queued events to the server. Returns a `FlushResult` indicating success or failure.
+
+<Tabs>
+  <TabItem label="Kotlin">
+    ```kotlin
+    // In a coroutine
+    val result = hoglin.flush()
+    when (result) {
+        is FlushResult.Success -> println("Events sent successfully")
+        is FlushResult.Error -> println("Failed to send events: ${result.message}")
+    }
+    ```
+  </TabItem>
+  <TabItem label="Java">
+    ```java
+    // Java doesn't have suspend functions, use flushSync() instead
+    FlushResult result = hoglin.flushSync();
+    if (result instanceof FlushResult.Success) {
+        System.out.println("Events sent successfully");
+    } else if (result instanceof FlushResult.Error) {
+        FlushResult.Error error = (FlushResult.Error) result;
+        System.out.println("Failed to send events: " + error.getMessage());
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+### `flushSync(): FlushResult`
+
+Synchronously flushes events (blocks current thread).
+
+```kotlin
+val result = hoglin.flushSync()
+```
+
+---
+
+## Experiment Methods
+
+Experiments allow you to easily enable, disable, and progressively rollout features to your playerbase. Read the guide [here](/guides/experiments)
+
+### `hasExperiment(experimentId: String, playerUUID: UUID?, callback: (Boolean) -> Unit)`
+
+Asynchronously checks if a player is included in an experiment.
+
+<Tabs>
+  <TabItem label="Kotlin">
+    ```kotlin
+    // Player-specific experiment
+    hoglin.hasExperiment("new_shop_ui", player.uniqueId) { inExperiment ->
+        if (inExperiment) {
+            // Show new UI
+        } else {
+            // Show old UI
+        }
+    }
+
+    // Server-wide experiment (no player UUID)
+    hoglin.hasExperiment("holiday_event") { isEnabled ->
+        if (isEnabled) {
+            // Enable holiday features
+        }
+    }
+    ```
+  </TabItem>
+  <TabItem label="Java">
+    ```java
+    // Player-specific experiment
+    hoglin.hasExperiment("new_shop_ui", player.getUniqueId(), inExperiment -> {
+        if (inExperiment) {
+            // Show new UI
+        } else {
+            // Show old UI
+        }
+    });
+
+    // Server-wide experiment (no player UUID)
+    hoglin.hasExperiment("holiday_event", isEnabled -> {
+        if (isEnabled) {
+            // Enable holiday features
+        }
+    });
+    ```
+  </TabItem>
+</Tabs>
+
+### `hasExperiment(experimentId: String, callback: (Boolean) -> Unit)`
+
+Overloaded version for non-player-specific experiments.
+
+<Tabs>
+  <TabItem label="Kotlin">
+    ```kotlin
+    hoglin.hasExperiment("maintenance_mode") { isEnabled ->
+        if (isEnabled) {
+            // Enable maintenance mode
+        }
+    }
+    ```
+  </TabItem>
+  <TabItem label="Java">
+    ```java
+    hoglin.hasExperiment("maintenance_mode", isEnabled -> {
+        if (isEnabled) {
+            // Enable maintenance mode
+        }
+    });
+    ```
+  </TabItem>
+</Tabs>
+
+### `hasExperimentSync(experimentId: String, playerUUID: UUID?): Boolean`
+
+Synchronously checks experiment status (blocks current thread).
+
+<Aside type="caution">
+**Performance Warning:** This method blocks the current thread. Use the asynchronous version when possible.
+</Aside>
+
+<Tabs>
+  <TabItem label="Kotlin">
+    ```kotlin
+    val inExperiment = hoglin.hasExperimentSync("new_shop_ui", player.uniqueId)
+    if (inExperiment) {
+        // Show new UI
+    }
+
+    // Default parameter for server-wide experiments
+    val isEnabled = hoglin.hasExperimentSync("holiday_event")
+    ```
+  </TabItem>
+  <TabItem label="Java">
+    ```java
+    boolean inExperiment = hoglin.hasExperimentSync("new_shop_ui", player.getUniqueId());
+    if (inExperiment) {
+        // Show new UI
+    }
+
+    // For server-wide experiments, pass null
+    boolean isEnabled = hoglin.hasExperimentSync("holiday_event", null);
+    ```
+  </TabItem>
+</Tabs>
+
+---
+
+## Lifecycle Methods
+
+### `shutdown()` (suspend)
+
+Gracefully shuts down the SDK, cancelling auto-flush and attempting to send remaining events.
+
+```kotlin
+// In a coroutine
+hoglin.shutdown()
+```
+
+### `shutdownBlocking()`
+
+Synchronously shuts down the SDK (call this in `onDisable()` or equivalent).
+
+```kotlin
+hoglin.shutdownBlocking()
+```
+
+---
+
+## Event Schema
+
+Each event you send with the SDK has:
+
+| Field         | Type              | Description                        |
+|---------------|-------------------|------------------------------------|
+| `event_type`  | `String`          | Name of the event                  |
+| `timestamp`   | `String`          | ISO-8601 timestamp when tracked   |
+| `properties`  | `Map<String,Any>` | Your custom event data             |
+
+---
+
+## Error Handling
+
+- The SDK queues events locally and retries if the API is unavailable.
+- Failed events are re-queued for retryable errors (network issues, server errors).
+- Non-retryable errors (bad requests) will drop events to prevent infinite loops.
+- Experiments return `false` if the API is unavailable or the experiment doesn't exist.
+- Use `flush()` or `shutdownBlocking()` to ensure all events are sent before shutdown.
+
+### Retryable vs Non-Retryable Errors
+
+**Retryable** (events re-queued):
+- Network timeouts (-1, 408)
+- Rate limiting (429)
+- Server errors (500, 502, 503, 504)
+
+**Non-Retryable** (events dropped):
+- Authentication errors (401, 403)
+- Bad requests (400)
+- Not found (404)
+
+---
+
+## FAQ
+
+**What happens if my server loses connection?**
+
+Events are queued and retried automatically. Experiments will return `false` until connection is restored.
+
+**Is there a limit to property keys/values?**
+
+No hard limit, but keep payloads reasonable for performance.
+
+**What happens if an experiment doesn't exist?**
+
+The SDK returns `false` for non-existent experiments.

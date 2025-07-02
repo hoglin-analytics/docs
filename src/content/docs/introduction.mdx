@@ -1,0 +1,63 @@
+---
+title: Welcome to Hoglin
+description: Learn what Hoglin is and why it’s the best analytics platform for Minecraft servers.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components'
+
+**Hoglin is analytics, reimagined for Minecraft.**
+
+Track player activity, monitor server health, and build your own custom events, all with a privacy-first, developer-friendly SDK.
+
+## Why Analytics for Minecraft?
+
+With Hoglin, you can:
+
+- **Understand your players**: See who's joining, leaving and more.
+- **Monitor your server**: Track TPS, memory and other vital stats specific to your server.
+- **Make better decisons**: Track what you want to see what players are engaging in, and what they're not.
+
+## What you'll like about Hoglin
+
+- **Custom Event Tracking**: Track *anything* you want, place the `track` method anywhere and add any metadata you want.
+- **Real-time Dashboard**: Instantly visualize your data from your server
+- **Privacy First**: Hoglin sends no analytics on your behalf, only send what you *want* to send.
+- **Easy Integration**: Hoglin is platform agnostic, this means it works from Paper plugins made in Kotlin, down to Java server mods written for Fabric
+- **Scaleable**: Hoglin handles anything from small hobbyist projects, to massive networks.
+
+## How it works
+
+1. [**Add the SDK**](/getting-started#install-the-sdk) into your plugin
+2. [**Track events**](/guides/player-events) with a single line of code
+3. [**View your data**](/guides/explore) instantly in the Hoglin dashboard.
+
+<Tabs>
+  <TabItem label="Kotlin">
+    ```kotlin
+    @EventHandler
+    fun onPlayerJoin(event: PlayerJoinEvent) {
+        analytics.track("player_join", mapOf(
+            "player_uuid" to event.player.uniqueId,
+            "first_join" to !event.player.hasPlayedBefore()
+        ))
+    }
+    ```
+  </TabItem>
+  <TabItem label="Java">
+    ```java
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("player_uuid", event.getPlayer().getUniqueId());
+        properties.put("first_join", !event.getPlayer().hasPlayedBefore());
+        analytics.track("player_join", properties);
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+## Ready to get started?
+
+
+- [Quickstart Guide →](./getting-started)
+- [Join our Discord](https://hoglin.gg/discord)

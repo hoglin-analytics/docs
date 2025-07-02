@@ -1,0 +1,10 @@
+:root {
+    --sl-content-width: 55vw;
+    --sl-flexoki-text-base: min(calc(0.875rem + 0.3vw), 0.9rem);
+}
+
+@media (max-width: 600px) {
+    :root {
+        --sl-content-width: 100vw;
+    }
+}
