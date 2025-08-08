@@ -1,4 +1,77 @@
 ---
-title: "temp"
-description: "tempy temp"
+title: "Installing the SDK"
+description: "Learn how to install the Hoglin SDK into your project"
 ---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components'
+import { Steps } from '@astrojs/starlight/components';
+
+We provide a lightweight yet powerful SDK for you to hook into to track custom analytics along with evaluating experiments.
+
+<br/>
+<br/>
+
+<Steps>
+
+    1.  ### Create a Server
+
+        If you haven't already created a server in Hoglin, follow [this guide](/guides/create-hoglin-server).
+
+    2.  ### Install the SDK
+
+        Add the Hoglin SDK to your project:
+
+        <Tabs>
+            <TabItem label="Gradle (Kotlin)">
+                ```kotlin title="build.gradle.kts"
+                repositories {
+                    maven {
+                      url = uri("https://maven.waypointstudios.com/releases")
+                    }
+                }
+
+                dependencies {
+                    implementation("gg.hoglin:sdk:1.0.5")
+                }
+                ```
+            </TabItem>
+            <TabItem label="Gradle (Groovy)">
+                ```groovy title="build.gradle"
+                repositories {
+                    maven {
+                        url 'https://maven.waypointstudios.com/releases'
+                    }
+                }
+
+                dependencies {
+                    implementation 'gg.hoglin:sdk:1.0.5'
+                }
+                ```
+            </TabItem>
+            <TabItem label="Maven">
+                ```xml title="pom.xml"
+                <repositories>
+                    <repository>
+                        <id>waypoint-studios</id>
+                        <name>Waypoint Studios</name>
+                        <url>https://maven.waypointstudios.com/releases</url>
+                    </repository>
+                </repositories>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>gg.hoglin</groupId>
+                        <artifactId>sdk</artifactId>
+                        <version>1.0.5</version>
+                    </dependency>
+                </dependencies>
+                ```
+            </TabItem>
+        </Tabs>
+        <br /><br />
+
+    3.  ### Next Steps
+
+        Learn how to [configure your Hoglin instance](/developer-sdk/configuring-your-instance)
+
+</Steps>
