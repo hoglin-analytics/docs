@@ -1,4 +1,59 @@
 ---
-title: "temp"
-description: "tempy temp"
+title: "Introduction to tracking"
+description: "Learn how to track custom analytics with the Hoglin SDK"
 ---
+
+import {Card, CardGrid, LinkCard} from "@astrojs/starlight/components";
+
+There's a variety of ways to track custom analytics within the Hoglin SDK. This guide will provide an overview of the
+different methods available, along with linking to more detailed examples. It will also explain how events are cached
+and when they are sent to Hoglin.
+
+<br/>
+
+### The event queue
+It's important to understand how the SDK caches events on the clientside before they're sent up to the Hoglin. By
+default, all tracked events will be added to a queue that gets flushed periodically; we call this an "autoflush". The
+flush period is defined by `autoFlushInterval` in the SDK builder. When the auto-flushing, the first `n` events are
+taken and sent to Hoglin, where `n` is the `maxBatchSize` set in the SDK builder. If there are more events in the queue,
+they will remain there until the next flush. Additionally, auto-flushing is asynchronous by default, we create a
+scheduled thread pool with 8 virtual threads. This can be manually overridden with the `executor` parameter in the SDK
+builder.
+
+<br/>
+
+### Using your own flushing strategy
+If you'd like, you can bypass our autoflush strategy and implement your own flushing logic. To do this, set
+`enableAutoFlush` to `false` in the SDK builder. Events will still be cached locally, but you can control when they are
+sent to Hoglin. To manually flush the queue, call `Hoglin#flush`. This will send *all* cached events to Hoglin,
+regardless of the size of the queue. Manual flush calls are **not made asynchronously**.
+
+<br/>
+<br/>
+
+<LinkCard
+    title="Configuring the SDK"
+    href="/developer-sdk/creating-your-instance/"
+    description="Visit this page for reference to configure the SDK options mentioned above"
+/>
+
+<br/>
+
+# Tracking methods
+Once you have your [Hoglin instance](/developer-sdk/creating-your-instance/), you'll notice you have a couple overloads
+for Hoglin#track. To remain flexible, we support a variety of inputs here, differing in complexity and features.
+
+<br/>
+
+<CardGrid>
+    <LinkCard
+        title="Basic event tracking"
+        description="The quickest way to get up and running with event tracking, with as little as one line of code!"
+        href="/guides/authoring-content/"
+    />
+    <LinkCard
+        title="Typesafety with Analytic and NamedAnalytic"
+        description="We reccomend using this! Setup remains simple but you gain type safety and object mapping within your events"
+        href="/guides/authoring-content/"
+    />
+</CardGrid>
