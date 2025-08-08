@@ -20,14 +20,14 @@ export default defineConfig({
         {
             label: 'Guides',
             items: [
-              { label: 'Create a Hoglin server', link: '/guides/create-hoglin-server' },
-              { label: 'Exploring your data', link: '/guides/exploring-your-data' },
+              { label: 'Create a Hoglin Server', link: '/guides/create-hoglin-server' },
+              { label: 'Exploring Your Data', link: '/guides/exploring-your-data' },
               { label: 'Visualisations', link: '/guides/visualisations' },
               { label: 'Experiments', link: '/guides/experiments' },
             ],
         },
         {
-            label: 'Public plugins',
+            label: 'Public Plugins',
             items: [
               {
                 label: 'PlayerTracker Plugin',
@@ -43,20 +43,20 @@ export default defineConfig({
             label: 'Developer SDK',
             items: [
               { label: 'Installation', link: '/developer-sdk/installation' },
-              { label: 'Creating your instance', link: '/developer-sdk/creating-your-instance' },
+              { label: 'Creating Your Instance', link: '/developer-sdk/creating-your-instance' },
               {
-                label: 'Tracking analytics',
+                label: 'Tracking Analytics',
                 items: [
-                  { label: 'Introduction to tracking', link: '/developer-sdk/tracking-analytics/introduction-to-tracking' },
-                  { label: 'Basic tracking', link: '/developer-sdk/tracking-analytics/basic-tracking' },
+                  { label: 'Introduction To tracking', link: '/developer-sdk/tracking-analytics/introduction-to-tracking' },
+                  { label: 'Tracking with Maps', link: '/developer-sdk/tracking-analytics/tracking-with-maps' },
                   { label: 'Analytic and NamedAnalytic', link: '/developer-sdk/tracking-analytics/analytic-and-namedanalytic' },
-                  { label: 'Overriding timestamps', link: '/developer-sdk/tracking-analytics/overriding-timestamps' },
-                  { label: 'Custom types and serializers', link: '/developer-sdk/tracking-analytics/custom-types-and-serializers' },
+                  { label: 'Overriding Timestamps', link: '/developer-sdk/tracking-analytics/overriding-timestamps' },
+                  { label: 'Custom Types and Serializers', link: '/developer-sdk/tracking-analytics/custom-types-and-serializers' },
                 ],
               },
-              { label: 'Evaluating experiments', link: '/developer-sdk/evaluating-experiments' },
-              { label: 'Safely shutting down', link: '/developer-sdk/safely-shutting-down' },
-              { label: 'Example plugins', link: '/developer-sdk/example-plugins' },
+              { label: 'Evaluating Experiments', link: '/developer-sdk/evaluating-experiments' },
+              { label: 'Safely Shutting Down', link: '/developer-sdk/safely-shutting-down' },
+              { label: 'Example Plugins', link: '/developer-sdk/example-plugins' },
             ],
         },
 			],
