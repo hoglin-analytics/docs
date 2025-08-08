@@ -21,7 +21,7 @@ import {Aside, TabItem, Tabs} from "@astrojs/starlight/components";
 <br/>
 
 Tracking with maps is the easiest way to start tracking custom events with Hoglin. As the name suggests, we construct
-our events parameters using a map of key-value pairs, where the keys are strings and the values can be of any type as
+our event parameters using a map of key-value pairs, where the keys are strings and the values can be of any type as
 long as they can be serialized - see the [Custom Types and Serializers](/developer-sdk/tracking-analytics/custom-types-and-serializers)
 guide if you'd like to add or modify serialization for specific types. The name of the event itself is passed in
 separately as a string. Usage: `Hoglin#track(String eventName, Map<String, Object> parameters)`.
