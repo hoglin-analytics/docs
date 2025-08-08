@@ -3,10 +3,10 @@ title: "Installing the SDK"
 description: "Learn how to install the Hoglin SDK into your project"
 ---
 
-import { Tabs, TabItem } from '@astrojs/starlight/components'
-import { Steps } from '@astrojs/starlight/components';
+import {Tabs, TabItem, Steps, LinkCard} from '@astrojs/starlight/components'
 
-We provide a lightweight yet powerful SDK for you to hook into to track custom analytics along with evaluating experiments.
+We provide a lightweight yet powerful SDK for you to hook into to track any custom analytics along with controlling
+feature experiments with just a few lines of code.
 
 <br/>
 <br/>
@@ -22,7 +22,7 @@ We provide a lightweight yet powerful SDK for you to hook into to track custom a
         Add the Hoglin SDK to your project:
 
         <Tabs>
-            <TabItem label="Gradle (Kotlin)">
+            <TabItem label="Gradle (Kotlin)" icon="seti:gradle">
                 ```kotlin title="build.gradle.kts"
                 repositories {
                     maven {
@@ -35,7 +35,7 @@ We provide a lightweight yet powerful SDK for you to hook into to track custom a
                 }
                 ```
             </TabItem>
-            <TabItem label="Gradle (Groovy)">
+            <TabItem label="Gradle (Groovy)" icon="seti:gradle">
                 ```groovy title="build.gradle"
                 repositories {
                     maven {
@@ -48,7 +48,7 @@ We provide a lightweight yet powerful SDK for you to hook into to track custom a
                 }
                 ```
             </TabItem>
-            <TabItem label="Maven">
+            <TabItem label="Maven" icon="seti:maven">
                 ```xml title="pom.xml"
                 <repositories>
                     <repository>
@@ -72,6 +72,10 @@ We provide a lightweight yet powerful SDK for you to hook into to track custom a
 
     3.  ### Next Steps
 
-        Learn how to [configure your Hoglin instance](/developer-sdk/configuring-your-instance)
+        <LinkCard
+            title="Create your instance"
+            href="/developer-sdk/creating-your-instance/"
+            description="Learn how to set up and configure your Hoglin instance."
+        />
 
 </Steps>

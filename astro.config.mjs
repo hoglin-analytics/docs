@@ -43,7 +43,7 @@ export default defineConfig({
             label: 'Developer SDK',
             items: [
               { label: 'Installation', link: '/developer-sdk/installation' },
-              { label: 'Configuring your instance', link: '/developer-sdk/configuring-your-instance' },
+              { label: 'Creating your instance', link: '/developer-sdk/creating-your-instance' },
               {
                 label: 'Tracking analytics',
                 items: [
