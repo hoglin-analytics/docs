@@ -39,13 +39,14 @@ Hoglin features.
 ## Builder options
 The `Hoglin.Builder` class provides several options to configure your Hoglin instance
 
-| Method                  | Type                       | Default                 | Description                                                                                                                                                     |
-|-------------------------|----------------------------|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `enableAutoFlush(b)`    | `Boolean`                  | `true`                  | Whether to auto-flush events (perioidcally send a batch of queued events)                                                                                       |
-| `autoFlushInterval(ms)` | `Long`                     | `30000`                 | How often (ms) to auto-flush                                                                                                                                    |
-| `maxBatchSize(n)`       | `Int`                      | `1000`                  | Max events sent per auto-flush, extra requests will remain in the queue                                                                                         |
-| `baseUrl(url)`          | `String`                   | `https://api.hoglin.gg` | API endpoint - should never be changed outside of certain circumstances                                                                                         |
-| `executor(executor)`    | `ScheduledExecutorService` | [...]                   | The default executor used for Hoglin - only change this if you know what you're doing!                                                                          |
-| `gson(gson)`            | `GSON`                     | [...]                   | The Gson instance used for serialization and deserialization - [register custom serializers](/developer-sdk/custom-types-and-serializers) instead if applicable |
+| Method                    | Type                       | Default                 | Description                                                                                                                                                     |
+|---------------------------|----------------------------|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `enableAutoFlush(b)`      | `Boolean`                  | `true`                  | Whether to auto-flush events (perioidcally send a batch of queued events)                                                                                       |
+| `requeueFailedFlushes(b)` | `Boolean`                  | `true`                  | Whether events that failed to get flushed should be added back to the event queue                                                                               |
+| `autoFlushInterval(ms)`   | `Long`                     | `15000`                 | How often (ms) to auto-flush                                                                                                                                    |
+| `maxBatchSize(n)`         | `Int`                      | `10000`                 | Max events sent per auto-flush, extra requests will remain in the queue                                                                                         |
+| `baseUrl(url)`            | `String`                   | `https://api.hoglin.gg` | API endpoint - should never be changed outside of certain circumstances                                                                                         |
+| `executor(executor)`      | `ScheduledExecutorService` | [...]                   | The default executor used for Hoglin - only change this if you know what you're doing!                                                                          |
+| `gson(gson)`              | `GSON`                     | [...]                   | The Gson instance used for serialization and deserialization - [register custom serializers](/developer-sdk/custom-types-and-serializers) instead if applicable |
 
 <br/>
