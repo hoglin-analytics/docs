@@ -34,20 +34,20 @@ separately as a string. Usage: `Hoglin#track(String eventName, Map<String, Objec
     <TabItem label="Java" icon="seti:java">
         ```java
         Hoglin hoglin = /** Your Hoglin instance */;
-        hoglin.track("some_event", Map.of(
-            "key1", "value1",
-            "key2", 123,
-            "key3", true
+        hoglin.track("player_join", Map.of(
+            "player_uuid", UUID.randomUUID(),
+            "hostname", "example.com",
+            "isBedrock", false
         ));
         ```
     </TabItem>
     <TabItem label="Kotlin" icon="seti:kotlin">
         ```kotlin
         val hoglin = /** Your Hoglin instance */
-        hoglin.track("some_event", mapOf(
-            "key1" to "value1",
-            "key2" to 123,
-            "key3" to true
+        hoglin.track("player_join", mapOf(
+            "player_uuid" to UUID.randomUUID(),
+            "hostname" to "example.com",
+            "isBedrock" to false
         ))
         ```
     </TabItem>
