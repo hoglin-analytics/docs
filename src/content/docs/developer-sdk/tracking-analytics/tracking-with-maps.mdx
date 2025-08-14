@@ -9,7 +9,7 @@ import {Aside, TabItem, Tabs} from "@astrojs/starlight/components";
 
 <Aside type="tip" title="Before You Start">
     - **Set up your SDK instance**: If you haven't already set up your Hoglin instance, follow the [Creating Your Instance](/developer-sdk/creating-your-instance) guide.
-    - **Understand the event queue**: Familiarize yourself with the event queue and flushing strategies in the [Introduction To Tracking](/developer-sdk/tracking-analytics/introduction-to-tracking/) guide.
+    - **Understand the Event Queue**: Familiarize yourself with the event queue and flushing strategies in the [Introduction To Tracking](/developer-sdk/tracking-analytics/introduction-to-tracking/) guide.
 </Aside>
 
 <Aside type="caution" title="Consider using Analytic and NamedAnalytic">
@@ -20,15 +20,16 @@ import {Aside, TabItem, Tabs} from "@astrojs/starlight/components";
 
 <br/>
 
+## Outline
 Tracking with maps is the easiest way to start tracking custom events with Hoglin. As the name suggests, we construct
 our event parameters using a map of key-value pairs, where the keys are strings and the values can be of any type as
 long as they can be serialized - see the [Custom Types and Serializers](/developer-sdk/tracking-analytics/custom-types-and-serializers)
 guide if you'd like to add or modify serialization for specific types. The name of the event itself is passed in
 separately as a string. Usage: `Hoglin#track(String eventName, Map<String, Object> parameters)`.
 
-## Full code example:
-
 <br/>
+
+## Full code example
 
 <Tabs>
     <TabItem label="Java" icon="seti:java">
@@ -62,7 +63,7 @@ After executing this, the event will be tracked in the event queue and sent off 
 After an event has been pushed to Hoglin, you should be able to see it update in real-time on the Hoglin dashboard.
 Looking at the table view for the example above, you'll see an event that looks something like this:
 
-![Example event in Hoglin dashboard](../../../../assets/tracked-event-example.png)
+![Example event in Hoglin dashboard](../../../../assets/table-view/mapped-player-join.png)
 
 You can do a lot more with your data, visualizing and aggregating it in various ways, follow this guide to learn more
 about [Exploring Your Data](/guides/exploring-your-data) in the Hoglin dashboard.

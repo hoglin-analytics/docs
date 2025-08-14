@@ -11,7 +11,7 @@ and when they are sent to Hoglin.
 
 <br/>
 
-### The event queue
+### The Event Queue
 It's important to understand how the SDK caches events on the clientside before they're sent up to the Hoglin. By
 default, all tracked events will be added to a queue that gets flushed periodically; we call this an "autoflush". The
 flush period is defined by `autoFlushInterval` in the SDK builder. When auto-flushing, the first `n` events are
