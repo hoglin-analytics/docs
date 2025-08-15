@@ -5,15 +5,15 @@ description: "Learn how to register custom types and serializers in the Hoglin S
 
 import {Aside, LinkCard, TabItem, Tabs} from "@astrojs/starlight/components";
 
-Custom serializers allow you to represent more complex data structures in your analytics. The Hoglin SDK uses GSON for
-serialization, so you can register an adapter very similar to a typical a GSON TypeAdapter. There are two methods of
+Custom serializers allow you to represent more complex data structures in your analytics. The Hoglin SDK uses Gson for
+serialization, so you can register an adapter very similar to a typical a Gson TypeAdapter. There are two methods of
 doing this:
 
 <br/>
 
 # Extending HoiglinAdapter
 We provide `HoglinAdapter`, a type you can extend to create your own custom serializer. `HoglinAdapter` is a
-simple wrapper around GSON's `TypeAdapter` but also allows for automatic registration in the SDK's GSON instance through
+simple wrapper around Gson's `TypeAdapter` but also allows for automatic registration in the SDK's Gson instance through
 Google AutoService. Example `HoglinAdapter` for serializing `Instant` objects - this is already bundled in the SDK as
 it's used internally, meaning the `Instant` type will be serializable when tracking your events:
 
@@ -77,11 +77,11 @@ automatically register it behind the scenes.
 
 <br/>
 
-# Using your own GSON instance
-You may alternatively choose to use your own GSON instance instead of the one provided by the SDK. This way you can
-register custom serializers directly with it. This is useful if you already intend to use GSON to serialize the same
+# Using your own Gson instance
+You may alternatively choose to use your own Gson instance instead of the one provided by the SDK. This way you can
+register custom serializers directly with it. This is useful if you already intend to use Gson to serialize the same
 types for another purpose, or if for any other reason you would like more control over serialization in the SDK. A
-custom GSON instance can be passed into the Hoglin builder:
+custom Gson instance can be passed into the Hoglin builder:
 
 <Tabs>
     <TabItem label="Java" icon="seti:java">
@@ -91,7 +91,7 @@ final Gson gson = new GsonBuilder();
     .create();
 
 final Hoglin hoglin = new Hoglin.Builder("api_key")
-    .gson(gson) // Pass in your custom GSON instance
+    .gson(gson) // Pass in your custom Gson instance
     .create()
 ```
 
@@ -103,7 +103,7 @@ val gson = GsonBuilder();
     .create()
 
 val hoglin = new Hoglin.Builder("api_key")
-    .gson(gson) // Pass in your custom GSON instance
+    .gson(Gson) // Pass in your custom Gson instance
     .build();
 ```
     </TabItem>
@@ -115,8 +115,8 @@ val hoglin = new Hoglin.Builder("api_key")
     href="/developer-sdk/creating-your-instance/"
 />
 
-<Aside type="danger" title="Setting up your GSON instance correctly">
-    When passing in your own GSON instance, you must make sure to include the same custom serializers required by the
+<Aside type="danger" title="Setting up your Gson instance correctly">
+    When passing in your own Gson instance, you must make sure to include the same custom serializers required by the
     SDK internally. Currently, the SDK only requires a serializer for `Instant`, and an example for it can be found
     above. This is subject to change in the future, so be aware of it when updating the SDK.
 </Aside>
