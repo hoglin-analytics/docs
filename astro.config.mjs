@@ -56,7 +56,6 @@ export default defineConfig({
               },
               { label: 'Evaluating Experiments', link: '/developer-sdk/evaluating-experiments' },
               { label: 'Safely Shutting Down', link: '/developer-sdk/safely-shutting-down' },
-              { label: 'Example Plugins', link: '/developer-sdk/example-plugins' },
             ],
         },
 			],
