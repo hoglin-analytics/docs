@@ -1,4 +1,114 @@
 ---
-title: "temp"
-description: "tempy temp"
+title: "Custom Types and Serializers"
+description: "Learn how to register custom types and serializers in the Hoglin SDK"
 ---
+
+import {TabItem, Tabs} from "@astrojs/starlight/components";
+
+Custom serializers allow you to represent more complex data structures in your analytics events. The Hoglin SDK uses
+GSON for serialization, so you can register an adapter very similar to a typical a GSON TypeAdapter. There are primarily
+two methods of doing this:
+
+<br/>
+
+# Extending HoiglinAdapter
+We provide `HoglinAdapter`, a type you can extend to create your own custom serializer. `HoglinAdapter` is a
+simple wrapper around GSON's `TypeAdapter` but also allows for automatic registration in the SDK's GSON instance through
+Google AutoService. Example `HoglinAdapter` for serializing `Instant` objects - this is already bundled in the SDK as
+it's used internally, meaning the `Instant` type will be serializable when tracking your events:
+
+<Tabs>
+    <TabItem label="Java" icon="seti:java">
+```java
+@AutoService(HoglinAdapter.class)
+public class InstantSerializer extends HoglinAdapter<Instant> {
+    @Override
+    public void write(final JsonWriter out, final Instant value) throws IOException {
+        if (value == null) {
+            out.nullValue();
+        } else {
+            out.value(value.toString());
+        }
+    }
+
+    @Override
+    public Instant read(final JsonReader reader) throws IOException {
+        if (reader.peek() == JsonToken.NULL) {
+            reader.nextNull();
+            return null;
+        }
+        return Instant.parse(reader.nextString());
+    }
+
+    @Override
+    public Class<?> getType() {
+        return Instant.class;
+    }
+}
+```
+    </TabItem>
+    <TabItem label="Kotlin" icon="seti:kotlin">
+```kotlin
+@AutoService(HoglinAdapter::class)
+class InstantSerializer : HoglinAdapter<Instant> {
+override fun write(out: JsonWriter, value: Instant?) {
+    if (value == null) {
+        out.nullValue()
+    } else {
+        out.value(value.toString())
+    }
+}
+
+override fun read(reader: JsonReader): Instant? {
+    if (reader.peek() == JsonToken.NULL) {
+        reader.nextNull()
+        return null
+    }
+    return Instant.parse(reader.nextString())
+
+    override fun getType(): Class<*> = Instant::class.java
+}
+```
+    </TabItem>
+</Tabs>
+
+There's no need for manual registration of this adapter, the `@AutoService` annotation will allow for the SDK to
+automatically register it behind the scenes.
+
+<br/>
+
+# Using your own GSON instance
+You may alternatively choose to use your own GSON instance instead of the one provided by the SDK. This way you can
+register custom serializers directly with it. This is useful if you already intend to use GSON to serialize the same
+types for another purpose, or if for any other reason you would like more control over serialization in the SDK. A
+custom GSON instance can be passed into the Hoglin builder:
+
+<Tabs>
+    <TabItem label="Java" icon="seti:java">
+```java
+final GsonBuilder builder = new GsonBuilder();
+builder.registerTypeAdapter(Instant.class, new InstantSerializer()); // Assuming we have the InstantSerializer from above
+
+final Hoglin hoglin = new Hoglin.Builder("api_key")
+    .gson(builder.create()) // Pass in your custom GSON instance
+    .build();
+```
+    </TabItem>
+    <TabItem label="Kotlin" icon="seti:kotlin">
+```kotlin
+aaa
+```
+    </TabItem>
+</Tabs>
+
+<LinkCard
+    title="Using the Hoglin builder"
+    description="Learn more about how to override default SDK properties"
+    href="/developer-sdk/creating-your-instance/"
+/>
+
+<Aside type="danger" title="Setting up your GSON instance correctly">
+    When passing in your own GSON instance, you must make sure to include the same custom serializers required by the
+    SDK internally. Currently, the SDK only requires a serializer for `Instant`, and an example for it can be found
+    above. This is subject to change in the future, so be aware of it when updating the SDK.
+</Aside>
