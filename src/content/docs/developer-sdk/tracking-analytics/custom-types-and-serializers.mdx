@@ -11,7 +11,7 @@ doing this:
 
 <br/>
 
-# Extending HoiglinAdapter
+## Extending HoiglinAdapter
 We provide `HoglinAdapter`, a type you can extend to create your own custom serializer. `HoglinAdapter` is a
 simple wrapper around Gson's `TypeAdapter` but also allows for automatic registration in the SDK's Gson instance through
 Google AutoService. Example `HoglinAdapter` for serializing `Instant` objects - this is already bundled in the SDK as
@@ -77,7 +77,7 @@ automatically register it behind the scenes.
 
 <br/>
 
-# Using your own Gson instance
+## Using your own Gson instance
 You may alternatively choose to use your own Gson instance instead of the one provided by the SDK. This way you can
 register custom serializers directly with it. This is useful if you already intend to use Gson to serialize the same
 types for another purpose, or if for any other reason you would like more control over serialization in the SDK. A

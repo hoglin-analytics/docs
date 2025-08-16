@@ -2,7 +2,7 @@
 title: "Creating Your Hoglin Instance"
 description: "Learn how to set up and configure your Hoglin SDK instance."
 ---
-import {Tabs, TabItem, Steps, Icon, Aside} from '@astrojs/starlight/components'
+import {Tabs, TabItem, Steps, Icon, Aside, LinkCard} from '@astrojs/starlight/components'
 
 The Hoglin SDK is designed to be flexible and easy to configure. In this guide, we'll walk you through basic SDK
 initialization along with additional configurations to suit your needs. This instance will be your entrypoint for all
@@ -50,3 +50,10 @@ The `Hoglin.Builder` class provides several options to configure your Hoglin ins
 | `gson(gson)`              | `GSON`                     | [...]                   | The Gson instance used for serialization and deserialization - [register custom serializers](/developer-sdk/custom-types-and-serializers) instead if applicable |
 
 <br/>
+
+## Discarding your instance
+<LinkCard
+    title="Safely Shutting Down"
+    description="Learn how to safely shut down the SDK when you're done using it or when your application/server is stopping."
+    href="/developer-sdk/safely-shutting-down/"
+/>

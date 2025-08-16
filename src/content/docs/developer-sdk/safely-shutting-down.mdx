@@ -12,7 +12,7 @@ If you would like to continue using the SDK after shutdown, a new instance shoul
 
 <br/>
 
-# Shutting down the SDK
+## Shutting down the SDK
 <Tabs>
     <TabItem label="Java" icon="seti:java">
 ```java
@@ -31,7 +31,7 @@ In the case of something like a Minecraft plugin, the most ideal place to call t
 
 <br/>
 
-# Handling failed flushes on shutdown
+## Handling failed flushes on shutdown
 In the case of a network failure, Hoglin backend failure, or if your usage quota is full, the SDK may not be able to
 push all queued events on shutdown. It will retry 5 times with 5 second delays before failing and continuing. In the
 case of failure, the reason will be logged in the console, and the blocking call will be interrupted. Any remaining
