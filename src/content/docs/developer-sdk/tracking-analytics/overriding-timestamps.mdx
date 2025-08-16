@@ -1,4 +1,113 @@
 ---
-title: "temp"
-description: "tempy temp"
+title: "Overriding Timestamps"
+description: "Learn how to override timestamps when tracking analytics the Hoglin SDK"
 ---
+
+import {Aside, Tabs, TabItem} from "@astrojs/starlight/components";
+
+By default, when [Tracking with Maps](developer-sdk/tracking-analytics/tracking-with-maps/) or using the
+[Analytic/NamedAnalytic](developer-sdk/tracking-analytics/analytic-and-namedanalytic/) interfaces, the timestamp of the
+event is automatically set to the time at which the `Hoglin#track` call is made. But, in some situations, you may want
+to manually override this and set your own timestamp for an event. Let's explore how to do this.
+
+<br/>
+
+# Manually constructing a RecordedAnalytic
+When tracking with maps or the interfaces, both will dumb down to a `RecordedAnalytic` under the hood.
+This is a class containing the event name, properties, and notably a timestamp. Typically, the timestamp is defaulted
+to the current time upon construction. However, we expose this class, along with a method for tracking with it:
+`Hoglin#track(RecordedAnalytic<?> analytic)`, providing a way for you to set your own timestamp.
+
+<Aside type="danger" title="RecordedAnalytic is generic!">
+    The `properties` field is typed as `<T>`. `T` must either be a `Map<String, Object>`, or implement the
+    `Analytic`/`NamedAnalytic` interface. Using any other type will likely cause runtime exceptions.
+</Aside>
+
+<br/>
+
+# Full code example
+<Tabs>
+    <TabItem label="Java" icon="seti:java">
+```java
+// Tracking with maps
+
+Hoglin hoglin = /** Your Hoglin instance */;
+
+final RecordedAnalytic<Map<String, Object>> analytic = new RecordedAnalytic<>(
+    "example_event",
+    Instant.now().minus(10, ChronoUnit.MINUTES),
+    Map.of(
+        "example_string", "test",
+        "example_integer", 123
+    )
+);
+
+hoglin.track(analytic);
+```
+```java
+// Using the Analytic/NamedAnalytic interface
+
+class ExampleAnalytic implements NamedAnalytic {
+    final String exampleString;
+    final int exampleInteger;
+
+    ExampleAnalytic(final String exampleString, final int exampleInteger) {
+        this.exampleString = exampleString;
+        this.exampleInteger = exampleInteger;
+    }
+
+    @Override
+    public @NotNull String getEventType() { return "example_event"; }
+}
+
+Hoglin hoglin = /** Your Hoglin instance */;
+
+final RecordedAnalytic<ExampleAnalytic> analytic = new RecordedAnalytic<>(
+    "example_event",
+    Instant.now().minus(10, ChronoUnit.MINUTES),
+    new ExampleAnalytic("test", 123)
+);
+
+hoglin.track(analytic);
+```
+    </TabItem>
+    <TabItem label="Kotlin" icon="seti:kotlin">
+```kotlin
+// Tracking with maps
+
+val hoglin: Hoglin = /** Your Hoglin instance */
+
+val analytic = RecordedAnalytic(
+    "example_event",
+    Instant.now().minus(10, ChronoUnit.MINUTES),
+    mapOf(
+        "example_string" to "test",
+        "example_integer" to 123
+    )
+)
+
+hoglin.track(analytic)
+```
+```kotlin
+// Using the Analytic/NamedAnalytic interface
+
+class ExampleAnalytic(
+    val exampleString: String,
+    val exampleInteger: Int
+) : NamedAnalytic {
+    override fun getEventType(): String = "example_event"
+}
+
+val hoglin: Hoglin = /** Your Hoglin instance */
+
+val analytic = RecordedAnalytic(
+    "example_event",
+    Instant.now().minus(10, ChronoUnit.MINUTES),
+    ExampleAnalytic("test", 123)
+)
+
+hoglin.track(analytic)
+```
+    </TabItem>
+</Tabs>
+This will track the `example_event` with a timestamp of 10 minutes ago.
