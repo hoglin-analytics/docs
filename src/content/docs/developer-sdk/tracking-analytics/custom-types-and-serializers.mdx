@@ -103,7 +103,7 @@ val gson = GsonBuilder();
     .create()
 
 val hoglin = new Hoglin.Builder("api_key")
-    .gson(Gson) // Pass in your custom Gson instance
+    .gson(gson) // Pass in your custom Gson instance
     .build();
 ```
     </TabItem>
