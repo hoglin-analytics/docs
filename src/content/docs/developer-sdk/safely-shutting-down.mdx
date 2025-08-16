@@ -27,7 +27,8 @@ hoglin.close()
 ```
     </TabItem>
 </Tabs>
-In the case of something like a Minecraft plugin, the most ideal place to call this would be on the `onDisable()`
+In the case of Minecraft plugin for example, you'd want to call `Hoglin#close` in the `onDisable()`, as this will
+prevent the server from shutting down before the SDK's safe shutdown completes.
 
 <br/>
 
