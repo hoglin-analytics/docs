@@ -1,4 +1,90 @@
 ---
-title: "temp"
-description: "tempy temp"
+title: "What is PlayerTracker?"
+description: "Learn about the PlayerTracker plugin and its features"
 ---
+
+import {Aside} from "@astrojs/starlight/components";
+
+PlayerTracker is a plugin for Paper 1.21.x+ servers that serves as an introduction to Hoglin.
+It collects various common player metrics and hooks into several plugins when possible to provide extra data.
+It is designed to be easy to install and use, with minimal configuration required to get started.
+It's also [open-sourced](https://github.com/WaypointStudios/hoglin-player-tracker/), providing examples of how to use
+the Hoglin SDK as a developer.
+
+To get started with PlayerTracker, visit the [installation guide](/public-plugins/playertracker/installation). For a
+detailed rundown of features, see below:
+
+<br/>
+
+## Default Visualizations
+todo.
+
+<br/>
+
+## All tracked events
+
+<br/>
+
+### `player_join`
+Recorded when a player joins the server.
+
+| Parameter        | Type     | Description                                                                     |
+|------------------|----------|---------------------------------------------------------------------------------|
+| `uuid`           | `UUID`   | The UUID of the player who joined                                               |
+| `hostname`       | `String` | The hostname used by the player to connect to the server, eg "play.example.com" |
+| `ip`             | `String` | The IP address of the player                                                    |
+| `clientPlatform` | `String` | The platform the player is using, eg "JAVA" or "BEDROCK"                        |
+| `clientVersion`  | `String` | The client version used by the player, eg "1.21.1"                              |
+| `clientBrand`    | `String` | The client brand used by the player, eg "Vanilla" or "Fabric"                   |
+
+<Aside type="note" title="A note on client platform">
+    We hook into GeyserMC to determine if the player is on Bedrock.
+    If GeyserMC is not installed, the `clientPlatform` parameter will just always be "JAVA"
+</Aside>
+<Aside type="note" title="A note on client version">
+    The client version is determined by [PacketEvents](https://github.com/retrooper/packetevents/). ViaVersion will work
+    fine, some other solutions may also work.
+    Notably, due to Minecraft limitations, not all versions can be differentiated - eg: 1.21.7 and 1.21.8 will both be
+    reported as "1.21.7".
+    This is because the Minecraft protocol version doesn't change between some versions, so there's no way to tell them
+    apart.
+    In practice, this doesn't matter much, but it's worth noting to prevent confusion. A full list of protocol versions
+    can be found [here](https://minecraft.wiki/w/Minecraft_Wiki:Projects/wiki.vg_merge/Protocol_version_numbers).
+</Aside>
+
+
+<br/>
+
+### `player_leave`
+Recorded when a player leaves the server.
+
+| Parameter | Type   | Description                     |
+|-----------|--------|---------------------------------|
+| `uuid`    | `UUID` | The UUID of the player who left |
+
+
+<br/>
+
+### `player_purchase`
+Recorded via `/playertracker purchase ...` console command. This can be set up to be executed by a webstore
+platform when a player makes a purchase, learn more in the [configuration guide](/public-plugins/playertracker/configuration)
+
+| Parameter       | Type     | Description                                         |
+|-----------------|----------|-----------------------------------------------------|
+| `uuid`          | `UUID`   | The UUID of the player who made the purchase        |
+| `productName`   | `String` | The name of the product purchased                   |
+| `purchaseValue` | `Float`  | The value of the purchase, in the server's currency |
+
+<br/>
+
+### `afk_start` and `afk_stop`
+Recorded when a player's afk status changes through [Essentials](https://github.com/EssentialsX/Essentials).
+
+| Parameter | Type     | Description                                                  |
+|-----------|----------|--------------------------------------------------------------|
+| `uuid`    | `UUID`   | The UUID of the player who changed afk status                |
+| `cause`   | `String` | The cause for the afk status changing, eg: "COMMAND", "MOVE" |
+
+<Aside type="note" title="A note on afk cause">
+    This is provided by Essentials, the full list of causes can be found [here in the `AfkStatusChangeEvent.Cause` enum](https://github.com/EssentialsX/Essentials/blob/2.x/Essentials/src/main/java/net/ess3/api/events/AfkStatusChangeEvent.java#L39-L48).
+</Aside>

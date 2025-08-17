@@ -1,4 +1,25 @@
 ---
-title: "temp"
-description: "tempy temp"
+title: "Installing PlayerTracker"
+description: "Learn how to install the PlayerTracker plugin"
 ---
+
+import {LinkCard, Steps} from "@astrojs/starlight/components";
+
+<br/>
+
+<Steps>
+    1. ### Download the latest .jar release
+
+        This can be found in the [PlayerTracker GitHub repository](https://github.com/WaypointStudios/hoglin-player-tracker/releases/latest)
+
+    2. ### Add the jar file to your server
+
+        Place the downloaded jar file into your server's `plugins` directory and restart. Your server must be running Paper 1.21.x or later!
+
+    3. ### Configure the plugin
+        <LinkCard
+            title="Configuring PlayerTracker"
+            href="/public-plugins/playertracker/"
+            description="Learn how to set up and configure the PlayerTracker plugin."
+        />
+</Steps>
