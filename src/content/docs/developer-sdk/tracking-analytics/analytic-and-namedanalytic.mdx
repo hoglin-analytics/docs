@@ -50,9 +50,9 @@ Hoglin hoglin = /** Your Hoglin instance */
 boolean isAfk = /** Example runtime boolean */
 
 if (isAfk) {
-    hoglin.track("afk_start", new PlayerAfkAnalytic(UUID.randomUUID(), "COMMAND"))
+    hoglin.track("afk_start", new PlayerAfkAnalytic(UUID.randomUUID(), "COMMAND"));
 } else {
-    hoglin.track("afk_stop", new PlayerAfkAnalytic(UUID.randomUUID(), "COMMAND"))
+    hoglin.track("afk_stop", new PlayerAfkAnalytic(UUID.randomUUID(), "COMMAND"));
 }
 ```
   </TabItem>
@@ -82,7 +82,7 @@ if (isAfk) {
 <br/>
 
 ## Using NamedAnalytic (recommended when possible)
-Choose `NamedAnalytic` when your event name at known at compile time.
+Choose `NamedAnalytic` when your event name is known at compile time.
 
 <Tabs>
   <TabItem label="Java" icon="seti:java">
@@ -130,14 +130,14 @@ hoglin.track(PlayerJoinAnalytic(UUID.randomUUID(), "example.com:25565", false))
 
 <br/>
 
-You can do a lot more with your data, visualizing and aggregating it in various ways, follow this guide to learn more
+You can do a lot more with your data, visualizing and aggregating it in various ways. Follow this guide to learn more
 about [Exploring Your Data](/guides/exploring-your-data) in the Hoglin dashboard.
 
 <br/>
 
 ## Renaming your typed parameters
 You can can use GSON's `@SerializedName` annotation to apply a custom name to your parameters when they get serialized.
-This proves useful for using different naming schemes in your codebase and in Hoglin.
+This proves useful when using different naming schemes in your codebase and in Hoglin.
 <Tabs>
     <TabItem label="Java" icon="seti:java">
 ```java

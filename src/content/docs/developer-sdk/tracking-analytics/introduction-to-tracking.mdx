@@ -16,7 +16,9 @@ It's important to understand how the SDK caches events on the clientside before 
 default, all tracked events will be added to a queue that gets flushed periodically; we call this an "autoflush". The
 flush period is defined by `autoFlushInterval` in the SDK builder. When auto-flushing, the first `n` events are
 taken from the queue and sent to Hoglin, where `n` is the `maxBatchSize` set in the SDK builder. If there are more
-events in the queue, they will remain there until the next flush. Auto-flushing is asynchronous by default and remains
+events in the queue, they will remain there until the next flush.
+
+Auto-flushing is asynchronous by default and remains
 platform-agnostic by not hooking into platform-specific schedulers, instead we create our own scheduled thread pool with
 8 virtual threads. The executor used can be manually overridden with the `executor` parameter in the SDK builder.
 
