@@ -33,7 +33,12 @@ val isPlayerFeatureEnabled = hoglin.evaluateExperiment("my_experiment_id", UUID.
     </TabItem>
 </Tabs>
 In the event of evaluation failing (likely due to an invalid experiment ID), the methods will default to returning
-`false`, logging an error in the console without throwing an exception.
+`false`, logging an error in the console without throwing an exception. Note that there can be other causes for failure,
+such as network issues.
+
+If you wish to handle request failure differently, you may use `Hoglin#evaluateExperimentRaw(String experimentId)`,
+or `Hoglin#evaluateExperimentRaw(String experimentId, UUID playerUUID)`, which return back the raw
+`HttpResponseBoolean<Boolean>` from the request.
 
 <br/>
 
