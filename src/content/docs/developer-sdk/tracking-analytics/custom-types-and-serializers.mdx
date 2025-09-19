@@ -11,11 +11,15 @@ doing this:
 
 <br/>
 
-## Extending HoiglinAdapter
+## Extending HoglinAdapter
 We provide `HoglinAdapter`, a type you can extend to create your own custom serializer. `HoglinAdapter` is a
 simple wrapper around Gson's `TypeAdapter` but also allows for automatic registration in the SDK's Gson instance through
-Google AutoService. Example `HoglinAdapter` for serializing `Instant` objects - this is already bundled in the SDK as
-it's used internally, meaning the `Instant` type will be serializable when tracking your events:
+Google AutoService.
+
+### Example
+`HoglinAdapter` for serializing `Instant` objects - this is already
+bundled in the SDK as it's used internally, meaning the `Instant` type
+will be serializable when tracking your events:
 
 <Tabs>
     <TabItem label="Java" icon="seti:java">
@@ -78,16 +82,18 @@ automatically register it behind the scenes.
 <br/>
 
 ## Using your own Gson instance
-You may alternatively choose to use your own Gson instance instead of the one provided by the SDK. This way you can
-register custom serializers directly with it. This is useful if you already intend to use Gson to serialize the same
-types for another purpose, or if for any other reason you would like more control over serialization in the SDK. A
-custom Gson instance can be passed into the Hoglin builder:
+You may alternatively choose to use your own Gson instance instead of
+the one provided by the SDK. This way, you can register custom
+serializers directly with it. This is useful if you already intend to
+use Gson to serialize the same types for another purpose, or if for
+any other reason you would like more control over serialization in the
+SDK. A custom Gson instance can be passed into the Hoglin builder:
 
 <Tabs>
     <TabItem label="Java" icon="seti:java">
 ```java
-final Gson gson = new GsonBuilder();
-    .registerTypeAdapter(Instant.class, new InstantSerializer()); // Assuming we've already made this InstantSerializer class
+final Gson gson = new GsonBuilder()
+    .registerTypeAdapter(Instant.class, new InstantSerializer()) // Assuming we've already made this InstantSerializer class
     .create();
 
 final Hoglin hoglin = new Hoglin.Builder("api_key")
