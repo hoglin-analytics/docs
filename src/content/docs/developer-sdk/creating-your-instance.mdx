@@ -1,0 +1,58 @@
+---
+title: "Creating Your Hoglin Instance"
+description: "Learn how to set up and configure your Hoglin SDK instance."
+---
+import {Tabs, TabItem, Steps, Icon, Aside, LinkCard} from '@astrojs/starlight/components'
+
+The Hoglin SDK is designed to be flexible and easy to configure. In this guide, we'll walk you through basic SDK
+initialization along with additional configurations to suit your needs. This instance will be your entrypoint for all
+Hoglin features.
+
+<br/>
+
+<Aside type="tip" title="Before You Start">
+    - **Install the SDK**: If you haven't already installed the Hoglin SDK, follow the [Installation](/developer-sdk/installation) guide.
+    - **Have your API Key ready**: You can find your api key in the Hoglin dashboard under **Settings** > **API Info** > **API Key**.
+</Aside>
+
+<br/>
+
+## Basic Initialization
+<Tabs>
+    <TabItem label="Java" icon="seti:java">
+        ```java
+        Hoglin analytics = new Hoglin.Builder("api_key")
+            .build();
+        ```
+    </TabItem>
+    <TabItem label="Kotlin" icon="seti:kotlin">
+        ```kotlin
+        val analytics = Hoglin.Builder("api_key")
+            .build()
+        ```
+    </TabItem>
+</Tabs>
+
+<br/>
+
+## Builder options
+The `Hoglin.Builder` class provides several options to configure your Hoglin instance
+
+| Method                    | Type                       | Default                 | Description                                                                                                                                                     |
+|---------------------------|----------------------------|-------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `enableAutoFlush(b)`      | `Boolean`                  | `true`                  | Whether to auto-flush events (perioidcally send a batch of queued events)                                                                                       |
+| `requeueFailedFlushes(b)` | `Boolean`                  | `true`                  | Whether events that failed to get flushed should be added back to the event queue                                                                               |
+| `autoFlushInterval(ms)`   | `Long`                     | `15000`                 | How often (ms) to auto-flush                                                                                                                                    |
+| `maxBatchSize(n)`         | `Int`                      | `10000`                 | Max events sent per auto-flush, extra requests will remain in the queue                                                                                         |
+| `baseUrl(url)`            | `String`                   | `https://api.hoglin.gg` | API endpoint - should never be changed outside of certain circumstances                                                                                         |
+| `executor(executor)`      | `ScheduledExecutorService` | [...]                   | The default executor used for Hoglin - only change this if you know what you're doing!                                                                          |
+| `gson(gson)`              | `GSON`                     | [...]                   | The Gson instance used for serialization and deserialization - [register custom serializers](/developer-sdk/custom-types-and-serializers) instead if applicable |
+
+<br/>
+
+## Discarding your instance
+<LinkCard
+    title="Safely Shutting Down"
+    description="Learn how to safely shut down the SDK when you're done using it or when your application/server is stopping."
+    href="/developer-sdk/safely-shutting-down/"
+/>

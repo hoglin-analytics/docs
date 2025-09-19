@@ -1,0 +1,41 @@
+---
+title: "Safely Shutting Down the SDK"
+description: "Learn how to safely shut down the Hoglin SDK to ensure all events are processed and resources are released."
+---
+import {Tabs, TabItem} from "@astrojs/starlight/components";
+
+It's important to make sure we properly shut down the Hoglin SDK when it's no longer needed, this frees up resources and
+ensures that all events still in the queue are processed and sent to Hoglin (if possible). We provide a helper
+method to do this, `Hoglin#close`, which will **block the thread** until all queued events are sent to Hoglin.
+After shutting down, any resources being used by the SDK will be released and so the SDK instance will no longer usable.
+If you would like to continue using the SDK after shutdown, a new instance should be created.
+
+<br/>
+
+## Shutting down the SDK
+<Tabs>
+    <TabItem label="Java" icon="seti:java">
+```java
+Hoglin hoglin = /** Your Hoglin instance */;
+hoglin.close();
+```
+    </TabItem>
+    <TabItem label="Kotlin" icon="seti:kotlin">
+```kotlin
+val hoglin: Hoglin = /* Your Hoglin instance */
+hoglin.close()
+```
+    </TabItem>
+</Tabs>
+In the case of Minecraft plugin for example, you'd want to call `Hoglin#close` in the `onDisable()`, as this will
+prevent the server from shutting down before the SDK's safe shutdown completes.
+
+<br/>
+
+## Handling failed flushes on shutdown
+In the case of a network failure, Hoglin backend failure, or if your usage quota is full, the SDK may not be able to
+push all queued events on shutdown. It will retry 5 times with 5 second delays before failing and continuing. In the
+case of failure, the reason will be logged in the console, and the blocking call will be interrupted. Any remaining
+events will be lost. If you would like to handle this differently, you may choose to use `Hoglin#flush` before your
+`Hoglin#close` call. This executes is a manual flush that will attempt to send all queued events to Hoglin. This method
+is also blocking, and returns a `HttpResponse` object, allowing you to handle any error if the flush fails.

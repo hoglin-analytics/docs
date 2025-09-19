@@ -1,0 +1,52 @@
+---
+title: "Configuring PlayerTracker"
+description: "Learn how to configure the PlayerTracker plugin"
+---
+
+import {Aside} from "@astrojs/starlight/components";
+
+Getting started with the PlayerTracker plugin is straightforward, here we'll cover the configuration options available
+to you.
+
+<br/>
+
+<Aside type="tip" title="Before You Start">
+    - **Create your Hoglin server**: If you haven't already, follow the [Create a Hoglin Server](/guides/create-hoglin-server) guide.
+    - **Have your API Key ready**: You can find your api key in the Hoglin dashboard under **Settings** > **API Info** > **API Key**.
+</Aside>
+
+<br/>
+
+## The configuration file
+Once you start your server, the PlayerTracker plugin will automatically create a default configuration file at
+`plugins/PlayerTracker/hoglin.toml`. An example of the default configuration can be found below:
+
+```toml
+[authentication]
+server_key = "" # Your server key can be found on the settings panel of your Hoglin server
+
+[auto_flush] # An auto flush perioidcally pushes a batch of cached analytics from the server to Hoglin
+interval = 15000 # Interval in milliseconds to push events to Hoglin
+max_batch_size = 10000 # Maximum number to send in a single batch
+```
+
+There are descriptions of each field; all you need to get started is to fill in the `server_key` field with your API
+Key. You may also choose to modify the other fields should they interest you, but the defaults are generally sufficient.
+
+<br/>
+
+## Reloading the configuration
+To reload the configuration file after making changes, you can use the `/playertracker reload` command in-game or from the
+console. If anything goes wrong, an error message will be displayed in the console, and Hoglin will not function until
+re-reloaded with a correct config. Alternatively, you can restart the server to apply changes.
+
+<br/>
+
+## Logging purchases
+The PlayerTracker plugin provides a command to track purchases from a payment platform, eg: Tebex. To log a purchase,
+make sure you've set up your platform to execute this command when a purchase is made:
+
+`/playertracker purchase <player_uuid> <purchase_value> <product_name>`
+
+The last argument (product name) takes in multiple words. Example: `/playertracker purchase 123e4567-e89b-12d3-a456-426614174000 9.99 VIP Rank`.
+This will track the purchase in Hoglin, allowing you to visualize transactions in the dashboard.

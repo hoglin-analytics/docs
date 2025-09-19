@@ -1,0 +1,81 @@
+---
+title: "Installing the SDK"
+description: "Learn how to install the Hoglin SDK into your project"
+---
+
+import {Tabs, TabItem, Steps, LinkCard} from '@astrojs/starlight/components'
+
+We provide a lightweight yet powerful and platform-agnostic SDK for you to hook into to track custom analytics along
+with controlling feature experiments with just a few lines of code.
+
+<br/>
+<br/>
+
+<Steps>
+
+    1.  ### Create a Server
+
+        If you haven't already created a server in Hoglin, follow [this guide](/guides/create-hoglin-server).
+
+    2.  ### Install the SDK
+
+        Add the Hoglin SDK to your project:
+
+        <Tabs>
+            <TabItem label="Gradle (Kotlin)" icon="seti:gradle">
+                ```kotlin title="build.gradle.kts"
+                repositories {
+                    maven {
+                      url = uri("https://maven.waypointstudios.com/releases")
+                    }
+                }
+
+                dependencies {
+                    implementation("gg.hoglin:sdk:1.0.10")
+                }
+                ```
+            </TabItem>
+            <TabItem label="Gradle (Groovy)" icon="seti:gradle">
+                ```groovy title="build.gradle"
+                repositories {
+                    maven {
+                        url 'https://maven.waypointstudios.com/releases'
+                    }
+                }
+
+                dependencies {
+                    implementation 'gg.hoglin:sdk:1.0.10'
+                }
+                ```
+            </TabItem>
+            <TabItem label="Maven" icon="seti:maven">
+                ```xml title="pom.xml"
+                <repositories>
+                    <repository>
+                        <id>waypoint-studios</id>
+                        <name>Waypoint Studios</name>
+                        <url>https://maven.waypointstudios.com/releases</url>
+                    </repository>
+                </repositories>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>gg.hoglin</groupId>
+                        <artifactId>sdk</artifactId>
+                        <version>1.0.10</version>
+                    </dependency>
+                </dependencies>
+                ```
+            </TabItem>
+        </Tabs>
+        <br /><br />
+
+    3.  ### Next Steps
+
+        <LinkCard
+            title="Create your instance"
+            href="/developer-sdk/creating-your-instance/"
+            description="Learn how to set up and configure your Hoglin instance."
+        />
+
+</Steps>

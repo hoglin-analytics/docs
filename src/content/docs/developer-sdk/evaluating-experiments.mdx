@@ -1,0 +1,48 @@
+---
+title: "Evaluating Experiments"
+description: "Learn how to evaluate experiments and feature rollouts using the Hoglin SDK"
+---
+
+import {Tabs, TabItem, Aside} from "@astrojs/starlight/components";
+
+The Hoglin SDK provides simple methods to evaluate experiments and feature rollouts. For more info on what an experiment
+is and how to set one up, check out the [Experiments Guide](/guides/experiments). In code, experiments can be evaluated
+via `Hoglin#evaluateExperiment(String experimentId)`, or `Hoglin#evaluateExperiment(String experimentId, UUID playerUUID)`
+for a player-specific evaluation.
+
+<br/>
+
+## Full code example
+
+<Tabs>
+    <TabItem label="Java" icon="seti:java">
+```java
+Hoglin hoglin = /** Your Hoglin instance */;
+
+boolean isFeatureEnabled = hoglin.evaluateExperiment("my_experiment_id"); // Evaluate a global experiment
+boolean isPlayerFeatureEnabled = hoglin.evaluateExperiment("my_experiment_id", UUID.randomUUID()); // Evaluate a player-specific experiment
+```
+    </TabItem>
+    <TabItem label="Kotlin" icon="seti:kotlin">
+```kotlin
+val hoglin = /** Your Hoglin instance */
+
+val isFeatureEnabled = hoglin.evaluateExperiment("my_experiment_id") // Evaluate a global experiment
+val isPlayerFeatureEnabled = hoglin.evaluateExperiment("my_experiment_id", UUID.randomUUID
+```
+    </TabItem>
+</Tabs>
+In the event of evaluation failing (likely due to an invalid experiment ID), the methods will default to returning
+`false`, logging an error in the console without throwing an exception. Note that there can be other causes for failure,
+such as network issues.
+
+If you wish to handle request failure differently, you may use `Hoglin#evaluateExperimentRaw(String experimentId)`,
+or `Hoglin#evaluateExperimentRaw(String experimentId, UUID playerUUID)`, which return back the raw
+`HttpResponseBoolean<Boolean>` from the request.
+
+<br/>
+
+<Aside type="danger" title="Experiment evaluation is blocking!">
+    These methods make a blocking request to the Hoglin backend. Use them in an asynchronous context, eg., an async call
+    via the Bukkit scheduler, if you don't want to block the current thread.
+</Aside>
