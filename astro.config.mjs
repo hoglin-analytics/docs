@@ -10,7 +10,7 @@ export default defineConfig({
   		plugins: [starlightThemeFlexoki({
    		  accentColor: "orange",
   		})],
-      favicon: './src/assets/favicon.png',
+      favicon: './src/assets/logo-small.svg',
       customCss: ["/src/styles/custom.css"],
 			title: 'Hoglin',
 			sidebar: [
