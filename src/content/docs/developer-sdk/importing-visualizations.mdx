@@ -6,17 +6,14 @@ description: "Learn how to import visualizations to a dashboard using the Hoglin
 import {Tabs, TabItem, Aside} from "@astrojs/starlight/components";
 
 For public-facing projects using Hoglin, including bundled visualizations to aggregate and display custom analytics is a
-great way to show off the possibilities of your Hoglin integration. Our SDK provides simple ways to achieve this. For
+great way to show off the possibilities of your Hoglin integration. Hoglin's SDK provides simple ways to achieve this. For
 more info on visualizations and how to set them up, check out the [Visualizations Guide](/guides/visualizations).
 
 <br/>
 
 ### Understanding visualization snapshots
-When talking about an exported visualization, we refer to it as a "snapshot". In essence, a snapshot is
-a static copy of a visualization at a specific point in time. When a visualization is exported from the Hoglin
-dashboard, its current state is taken and stored. Snapshots are not tied to the original visualization. If the original
-visualization is updated or deleted later, the snapshot remains unchanged, and importing it again will yield the same
-result.
+When a visualization is shared via a link, a snapshot of its current state is created. Snapshots are independent of the
+original visualization, so subsequent changes (including updates or deletion) will not affect the snapshot.
 
 <br/>
 
@@ -37,9 +34,9 @@ We provide some configuration over the importing of snapshots. Notably:
 - `name` You can specify a custom name for the imported visualization. If you leave this blank, the original
   visualization's name will be used.
 - `preventDuplicate` This prevents importing the snapshot if a visualization that was imported from the same snapshot
-already exists on the dashboard. Specifying this parameter with `Hoglin#importSnapshot` is recommended as it does this logic in a
-round trip to the Hoglin backend, unlike manually checking with `Hoglin#isVisualizationImported()`, which would require two
-separate requests.
+already exists on the dashboard. Specifying this parameter with `Hoglin#importSnapshot` is recommended as it does this
+logic in one round trip to the Hoglin backend, as opposed to manually checking with `Hoglin#isVisualizationImported()`,
+which would require two separate requests.
 
 <br/>
 
