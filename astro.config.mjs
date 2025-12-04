@@ -22,7 +22,7 @@ export default defineConfig({
             items: [
               { label: 'Create a Hoglin Server', link: '/guides/create-hoglin-server' },
               { label: 'Exploring Your Data', link: '/guides/exploring-your-data' },
-              { label: 'Visualisations', link: '/guides/visualisations' },
+              { label: 'Visualizations', link: '/guides/visualizations' },
               { label: 'Experiments', link: '/guides/experiments' },
             ],
         },
@@ -55,6 +55,7 @@ export default defineConfig({
                 ],
               },
               { label: 'Evaluating Experiments', link: '/developer-sdk/evaluating-experiments' },
+              { label: 'Importing Visualizations', link: '/developer-sdk/importing-visualizations' },
               { label: 'Safely Shutting Down', link: '/developer-sdk/safely-shutting-down' },
             ],
         },

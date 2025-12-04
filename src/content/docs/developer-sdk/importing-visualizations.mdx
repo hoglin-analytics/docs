@@ -1,0 +1,130 @@
+---
+title: "Importing Visualizations"
+description: "Learn how to import visualizations to a dashboard using the Hoglin SDK"
+---
+
+import {Tabs, TabItem, Aside} from "@astrojs/starlight/components";
+
+For public-facing projects using Hoglin, including bundled visualizations to aggregate and display custom analytics is a
+great way to show off the possibilities of your Hoglin integration. Hoglin's SDK provides simple ways to achieve this. For
+more info on visualizations and how to set them up, check out the [Visualizations Guide](/guides/visualizations).
+
+<br/>
+
+### Understanding visualization snapshots
+When a visualization is shared via a link, a snapshot of its current state is created. Snapshots are independent of the
+original visualization, so subsequent changes (including updates or deletion) will not affect the snapshot.
+
+<br/>
+
+#### Primary usage
+```java
+// Only snapshotId is required for importing, overloads allow for importing with any combinations of parameters
+Hoglin#importSnapshot(UUID snapshotId, String name, Boolean preventDuplicate)
+
+// Checking if a snapshot has been imported standalone
+Hoglin#isVisualizationImported(UUID snapshotId)
+Hoglin#getImportedSnapshotInfo(UUID snapshotId)
+Hoglin#getImportedSnapshotInfoRaw(UUID snapshotId)
+```
+
+<br/>
+
+We provide some configuration over the importing of snapshots. Notably:
+- `name` You can specify a custom name for the imported visualization. If you leave this blank, the original
+  visualization's name will be used.
+- `preventDuplicate` This prevents importing the snapshot if a visualization that was imported from the same snapshot
+already exists on the dashboard. Specifying this parameter with `Hoglin#importSnapshot` is recommended as it does this
+logic in one round trip to the Hoglin backend, as opposed to manually checking with `Hoglin#isVisualizationImported()`,
+which would require two separate requests.
+
+<br/>
+
+## Importing visualizations
+
+<Tabs>
+    <TabItem label="Java" icon="seti:java">
+```java
+Hoglin hoglin = /** Your Hoglin instance */;
+UUID snapshotId = UUID.fromString("your-snapshot-id-here");
+
+hoglin.importSnapshot(snapshotId, "Imported Visualization", true); // Imports a visualization with a custom name and prevents duplicates
+
+// Outline of additional method overloads
+hoglin.importSnapshot(snapshotId); // Retains original visualization name, won't prevent duplicates
+hoglin.importSnapshot(snapshotId, true); // Retains original visualization name, prevents duplicates
+hoglin.importSnapshot(snapshotId, "Imported Visualization"); // Custom name, won't prevent duplicates
+```
+    </TabItem>
+    <TabItem label="Kotlin" icon="seti:kotlin">
+```kotlin
+val hoglin = /** Your Hoglin instance */
+val snapshotId = UUID.fromString("your-snapshot-id-here")
+
+hoglin.importSnapshot(snapshotId, "Imported Visualization", true); // Imports a visualization with a custom name and prevents duplicates
+
+// Outline of additional method overloads
+hoglin.importSnapshot(snapshotId); // Retains original visualization name, won't prevent duplicates
+hoglin.importSnapshot(snapshotId, true); // Retains original visualization name, prevents duplicates
+hoglin.importSnapshot(snapshotId, "Imported Visualization"); // Custom name, won't prevent duplicates
+```
+    </TabItem>
+</Tabs>
+
+<br/>
+
+## Standalone check for if a snapshot is imported
+
+<Tabs>
+    <TabItem label="Java" icon="seti:java">
+```java
+Hoglin hoglin = /** Your Hoglin instance */;
+UUID snapshotId = UUID.fromString("your-snapshot-id-here");
+
+if (hoglin.isVisualizationImported(snapshotId)) {
+    System.out.println("This snapshot been imported before and is on the dashboard!");
+}
+
+// Or, for more details
+final ImportedSnapshotEvaluation importedSnapshotInfo = hoglin.getImportedSnapshotInfo(snapshotId);
+if (importedSnapshotInfo.isImported()) {
+    final int amount = importedSnapshotInfo.getVisualizationIds().length;
+    System.out.println("This snapshot been imported before and is on the dashboard " + amount + " times! Ids: " + Arrays.toString(importedSnapshotInfo.getVisualizationIds()));
+    // Example output: "[...] on the dashboard 2 times! Ids: [db8868a7-e3d8-417b-92bc-bf75a47fd08a, 20e79621-50e2-4171-bc43-6633bedc3fc1]"
+}
+```
+    </TabItem>
+<TabItem label="Kotlin" icon="seti:kotlin">
+```kotlin
+val hoglin: Hoglin = /** Your Hoglin instance */
+val snapshotId = UUID.fromString("your-snapshot-id-here")
+
+if (hoglin.isVisualizationImported(snapshotId)) {
+    println("This snapshot been imported before and is on the dashboard!")
+}
+
+// Or, for more details
+val importedSnapshotInfo = hoglin.getImportedSnapshotInfo(snapshotId)
+if (importedSnapshotInfo.isImported) {
+    val amount = importedSnapshotInfo.visualizationIds.size
+    println("This snapshot been imported before and is on the dashboard $amount times! Ids: ${importedSnapshotInfo.visualizationIds.contentToString()}")
+    // Example output: "[...] on the dashboard 2 times! Ids: [db8868a7-e3d8-417b-92bc-bf75a47fd08a, 20e79621-50e2-4171-bc43-6633bedc3fc1]"
+}
+```
+    </TabItem>
+</Tabs>
+
+
+In the event of requests failing, `getImportedSnapshotInfo()` and `isVisualizationImported()` will fail gracefully,
+returning `null` or `false` where applicable and logging an error in the console without throwing an exception.
+
+If you wish to handle request failure differently, you may use `getImportedSnapshotInfoRaw()`, which returns the raw
+`HttpResponse<String>` from the request. Similarly, `Hoglin#importSnapshot()` will also return the raw
+`HttpResponse<String>` for further handling.
+
+<br/>
+
+<Aside type="danger" title="Snapshot importing and retrieving info is blocking!">
+    These methods make a blocking request to the Hoglin backend. Use them in an asynchronous context, eg., an async call
+    via the Bukkit scheduler, if you don't want to block the current thread.
+</Aside>
