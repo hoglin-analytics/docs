@@ -62,6 +62,14 @@ Recorded when a player leaves the server.
 |-----------|--------|---------------------------------|
 | `uuid`    | `UUID` | The UUID of the player who left |
 
+<br/>
+
+### `player_count`
+Recorded when the player count changes (join, leave), tracks new player count.
+
+| Parameter     | Type  | Description                        |
+|---------------|-------|------------------------------------|
+| `playerCount` | `Int` | The new player count on the server |
 
 <br/>
 
@@ -86,5 +94,6 @@ Recorded when a player's afk status changes through [Essentials](https://github.
 | `cause`   | `String` | The cause for the afk status changing, eg: "COMMAND", "MOVE" |
 
 <Aside type="note" title="A note on afk cause">
-    This is provided by Essentials, the full list of causes can be found [here in the `AfkStatusChangeEvent.Cause` enum](https://github.com/EssentialsX/Essentials/blob/2.x/Essentials/src/main/java/net/ess3/api/events/AfkStatusChangeEvent.java#L39-L48).
+    This is provided by Essentials, the full list of causes can be found [here in the `AfkStatusChangeEvent.Cause`
+    enum](https://github.com/EssentialsX/Essentials/blob/2.x/Essentials/src/main/java/net/ess3/api/events/AfkStatusChangeEvent.java#L39-L48).
 </Aside>
