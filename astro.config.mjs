@@ -47,7 +47,7 @@ export default defineConfig({
               {
                 label: 'Tracking Analytics',
                 items: [
-                  { label: 'Introduction To tracking', link: '/developer-sdk/tracking-analytics/introduction-to-tracking' },
+                  { label: 'Introduction To Tracking', link: '/developer-sdk/tracking-analytics/introduction-to-tracking' },
                   { label: 'Tracking with Maps', link: '/developer-sdk/tracking-analytics/tracking-with-maps' },
                   { label: 'Analytic and NamedAnalytic', link: '/developer-sdk/tracking-analytics/analytic-and-namedanalytic' },
                   { label: 'Overriding Timestamps', link: '/developer-sdk/tracking-analytics/overriding-timestamps' },
