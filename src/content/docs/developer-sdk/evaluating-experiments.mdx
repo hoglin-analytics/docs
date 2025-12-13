@@ -10,6 +10,31 @@ is and how to set one up, check out the [Experiments Guide](/guides/experiments)
 via `Hoglin#evaluateExperiment(String experimentId)`, or `Hoglin#evaluateExperiment(String experimentId, UUID playerUUID)`
 for a player-specific evaluation.
 
+You may see full experiment data, including name, description, evaluation rollout, etc., via
+`Hoglin#getExperiments()`, returning a map of experiment IDs to their corresponding `ExperimentData`. This data class
+also contains methods for evaluation: `ExperimentData#evaluate()`, and `ExperimentData#evaluate(UUID playerUUID)`.
+
+<br/>
+
+### Our caching strategy
+Whilst we have API endpoints to perform experiment evaluation on our backend, we perform the same logic locally in the
+SDK to save the need for a network request. To do this, we periodically cache experiment data from the Hoglin backend.
+
+Caching experiment data is asynchronous by default and remains platform-agnostic by not hooking into platform-specific
+schedulers, instead we create our own scheduled thread pool with 8 virtual threads. The executor used can be manually
+overridden with the `executor` parameter in the SDK builder.
+
+The frequency that Hoglin automatically caches experiment data is set to 60000 ms (1 minute) by default. The frequency
+can be controlled by setting `autoExperimentFetchInterval` in the SDK builder to the expected interval in milliseconds.
+
+To disable experiment fetching entirely, set `enableAutoExperimentFetch` to `false` in the SDK builder. In this case,
+experiment data will not be cached, and all experiment evaluations will fail (default to returning false).
+
+You may want to manually instantly fetch experiment data at specific times (e.g., on server startup, or to have fine
+control over caching periods). To do this, you can call `Hoglin#refreshExperimentCache()`, which will make a blocking
+request to the Hoglin backend to fetch the latest experiment data and cache it locally. You may safely call this method
+in an asynchronous context should you wish.
+
 <br/>
 
 ## Full code example
@@ -21,6 +46,13 @@ Hoglin hoglin = /** Your Hoglin instance */;
 
 boolean isFeatureEnabled = hoglin.evaluateExperiment("my_experiment_id"); // Evaluate a global experiment
 boolean isPlayerFeatureEnabled = hoglin.evaluateExperiment("my_experiment_id", UUID.randomUUID()); // Evaluate a player-specific experiment
+
+ExperimentData experimentData = hoglin.getExperiments().get("my_experiment_id"); // Retrieve full experiment data
+String name = experimentData.getName(); // Get experiment name
+@Nullable String description = experimentData.getDescription(); // Get experiment description (nullable as it may not be set)
+
+experimentData.evaluate(); // Evaluate a global experiment via ExperimentData
+experimentData.evaluate(UUID.randomUUID()); // Evaluate a player-specific experiment via ExperimentData
 ```
     </TabItem>
     <TabItem label="Kotlin" icon="seti:kotlin">
@@ -28,21 +60,22 @@ boolean isPlayerFeatureEnabled = hoglin.evaluateExperiment("my_experiment_id", U
 val hoglin = /** Your Hoglin instance */
 
 val isFeatureEnabled = hoglin.evaluateExperiment("my_experiment_id") // Evaluate a global experiment
-val isPlayerFeatureEnabled = hoglin.evaluateExperiment("my_experiment_id", UUID.randomUUID
+val isPlayerFeatureEnabled = hoglin.evaluateExperiment("my_experiment_id", UUID.randomUUID()) // Evaluate a player-specific experiment
+
+val experimentData: ExperimentData = hoglin.getExperiments()["my_experiment_id"] ?: return // Retrieve full experiment data
+val name: String = experimentData.getName() // Get experiment name
+val description: String? = experimentData.getDescription() // Get experiment description (nullable as it may not be set)
+
+experimentData.evaluate() // Evaluate a global experiment via ExperimentData
+experimentData.evaluate(UUID.randomUUID()) // Evaluate a player-specific experiment via ExperimentData
 ```
     </TabItem>
 </Tabs>
-In the event of evaluation failing (likely due to an invalid experiment ID), the methods will default to returning
-`false`, logging an error in the console without throwing an exception. Note that there can be other causes for failure,
-such as network issues.
-
-If you wish to handle request failure differently, you may use `Hoglin#evaluateExperimentRaw(String experimentId)`,
-or `Hoglin#evaluateExperimentRaw(String experimentId, UUID playerUUID)`, which return back the raw
-`HttpResponseBoolean<Boolean>` from the request.
-
 <br/>
 
-<Aside type="danger" title="Experiment evaluation is blocking!">
-    These methods make a blocking request to the Hoglin backend. Use them in an asynchronous context, eg., an async call
-    via the Bukkit scheduler, if you don't want to block the current thread.
+<Aside type="danger" title="Make sure you aren't evaluating before the first cache refresh!">
+    Since experiment data is fetched periodically and asynchronously by default, if you attempt to evaluate an
+    experiment close to initialization, your Hoglin instance may not have the latest experiment data cached yet which
+    can lead to unexpected results. The simplest way to mitigate this would be to run `Hoglin#refreshExperimentCache()`
+    on server/application start and let it block startup until the data is fetched.
 </Aside>
