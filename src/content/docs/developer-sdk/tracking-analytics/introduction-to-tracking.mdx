@@ -40,12 +40,22 @@ If you'd like, you can bypass our autoflush strategy and implement your own flus
 sent to Hoglin. To manually flush the queue, call `Hoglin#flush`. This will send *all* cached events to Hoglin,
 regardless of the size of the queue. Manual flush calls are **not made asynchronously**.
 
-
 <LinkCard
     title="Configuring the SDK"
     href="/developer-sdk/creating-your-instance/"
     description="Visit this page for reference to configure the SDK options mentioned above"
 />
+
+<br/>
+
+### Special event parameters
+Event parameters with certain names may be treated specially for better integration with the Hoglin dashboard. These
+are outlined below:
+
+| Parameter Name | Special Treatment                                                                                            |
+|----------------|--------------------------------------------------------------------------------------------------------------|
+| `playerUUID`   | Render player name where applicable, eg: "Tracked \{event_name}" -> "\{player name} triggered \{event_name}" |
+
 
 <br/>
 

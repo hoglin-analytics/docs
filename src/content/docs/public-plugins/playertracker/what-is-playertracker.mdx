@@ -30,7 +30,7 @@ Recorded when a player joins the server.
 
 | Parameter        | Type     | Description                                                                     |
 |------------------|----------|---------------------------------------------------------------------------------|
-| `uuid`           | `UUID`   | The UUID of the player who joined                                               |
+| `playerUUID`     | `UUID`   | The UUID of the player who joined                                               |
 | `hostname`       | `String` | The hostname used by the player to connect to the server, eg "play.example.com" |
 | `ip`             | `String` | The IP address of the player                                                    |
 | `clientPlatform` | `String` | The platform the player is using, eg "JAVA" or "BEDROCK"                        |
@@ -58,9 +58,9 @@ Recorded when a player joins the server.
 ### `player_leave`
 Recorded when a player leaves the server.
 
-| Parameter | Type   | Description                     |
-|-----------|--------|---------------------------------|
-| `uuid`    | `UUID` | The UUID of the player who left |
+| Parameter    | Type   | Description                     |
+|--------------|--------|---------------------------------|
+| `playerUUID` | `UUID` | The UUID of the player who left |
 
 <br/>
 
@@ -79,7 +79,7 @@ platform when a player makes a purchase, learn more in the [configuration guide]
 
 | Parameter       | Type     | Description                                         |
 |-----------------|----------|-----------------------------------------------------|
-| `uuid`          | `UUID`   | The UUID of the player who made the purchase        |
+| `playerUUID`    | `UUID`   | The UUID of the player who made the purchase        |
 | `productName`   | `String` | The name of the product purchased                   |
 | `purchaseValue` | `Float`  | The value of the purchase, in the server's currency |
 
@@ -88,10 +88,10 @@ platform when a player makes a purchase, learn more in the [configuration guide]
 ### `afk_start` and `afk_stop`
 Recorded when a player's afk status changes through [Essentials](https://github.com/EssentialsX/Essentials).
 
-| Parameter | Type     | Description                                                  |
-|-----------|----------|--------------------------------------------------------------|
-| `uuid`    | `UUID`   | The UUID of the player who changed afk status                |
-| `cause`   | `String` | The cause for the afk status changing, eg: "COMMAND", "MOVE" |
+| Parameter    | Type     | Description                                                  |
+|--------------|----------|--------------------------------------------------------------|
+| `playerUUID` | `UUID`   | The UUID of the player who changed afk status                |
+| `cause`      | `String` | The cause for the afk status changing, eg: "COMMAND", "MOVE" |
 
 <Aside type="note" title="A note on afk cause">
     This is provided by Essentials, the full list of causes can be found [here in the `AfkStatusChangeEvent.Cause`
