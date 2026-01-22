@@ -12,7 +12,7 @@ export default defineConfig({
   		})],
       favicon: './src/assets/logo-small.svg',
       customCss: ["/src/styles/custom.css"],
-			title: 'Hoglin',
+			title: 'Hoglin Analytics™',
 			sidebar: [
   			{ label: 'Introduction', link: '/introduction' },
         { label: 'Pricing', link: '/pricing' },
